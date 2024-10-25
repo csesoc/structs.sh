@@ -14,7 +14,7 @@ type ConsoleProp = {
 const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
   const PREFIX = 'structs.sh % ';
   const [input, setInput] = useState(PREFIX);
-  const inputElement = useRef(null);
+  const inputElement = useRef<HTMLInputElement>(null);
 
   const consoleChunks = useGlobalStore((state) => state.consoleChunks);
   const isConsoleActive = useFrontendStateStore((state) => state.isActive);
@@ -28,7 +28,9 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
 
   const clearInput = () => {
     setInput(PREFIX);
-    inputElement.current.innerText = '';
+    if (inputElement.current) {
+      inputElement.current.innerText = '';
+    }
   };
 
   // const handleKey = (event: React.KeyboardEvent<HTMLSpanElement>) => {
@@ -46,7 +48,7 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
   // };
 
   const focus = () => {
-    inputElement.current.focus();
+    inputElement.current?.focus();
   };
 
   const splitChunks = (chunk: string[]) => {
