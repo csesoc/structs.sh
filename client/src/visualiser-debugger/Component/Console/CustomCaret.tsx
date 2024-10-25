@@ -16,7 +16,7 @@ const CustomCaret = ({ input, handleInput, clearInput, scrollToBottom }: CustomC
     scrollToBottom
   );
 
-  const refInput = useRef<HTMLInputElement>();
+  const refInput = useRef<HTMLInputElement | null>(null);
 
   function handleFakeInputClick() {
     // Focus the hidden input when clicking on the fake one

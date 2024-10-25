@@ -13,7 +13,7 @@ function useCursor(content: string, clearInput: () => void, scrollToBottom: () =
     return currInput.split(' ').slice(2).join(' ');
   };
 
-  let timeoutRef = null;
+  let timeoutRef: NodeJS.Timeout;
 
   function pauseWithTimeout() {
     setPaused(true);
@@ -25,7 +25,7 @@ function useCursor(content: string, clearInput: () => void, scrollToBottom: () =
     }, 500);
   }
 
-  function updateShifts(key) {
+  function updateShifts(key: string) {
     switch (key) {
       case 'ArrowLeft':
         if (content.length > shifts) {
@@ -74,7 +74,7 @@ function useCursor(content: string, clearInput: () => void, scrollToBottom: () =
     setPaused(true);
   }
 
-  function handleKeyDown({ key }) {
+  function handleKeyDown({ key }: { key: string }) {
     pauseWithTimeout();
 
     updateShifts(key);
