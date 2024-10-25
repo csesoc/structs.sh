@@ -31,20 +31,6 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
     }
   };
 
-  // const handleKey = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-  //   if (event.key === 'Enter') {
-  //     const removedPrefixInput = removeStructsPrefix(input);
-  //     if (removedPrefixInput.length > 0) {
-  //       socket.serverAction.sendStdin(removedPrefixInput);
-  //       appendConsoleChunk(`${removedPrefixInput}\n`);
-  //       clearInput();
-  //       scrollToBottom();
-  //     }
-
-  //     event.preventDefault();
-  //   }
-  // };
-
   const focus = () => {
     inputElement.current?.focus();
   };
@@ -78,6 +64,7 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
           handleInput={handleInput}
           clearInput={clearInput}
           scrollToBottom={scrollToBottom}
+          inputRef={inputElement}
         />
       </div>
     </div>

@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import useCursor from './useCursor';
 import styles from '../../../styles/CustomCaret.module.css';
 
@@ -7,23 +6,21 @@ type CustomCaretProps = {
   handleInput: (currInput: string) => void;
   clearInput: () => void;
   scrollToBottom: () => void;
+  inputRef: React.RefObject<HTMLInputElement>;
 };
 
-const CustomCaret = ({ input, handleInput, clearInput, scrollToBottom }: CustomCaretProps) => {
+const CustomCaret = ({
+  input,
+  handleInput,
+  clearInput,
+  scrollToBottom,
+  inputRef,
+}: CustomCaretProps) => {
   const { handleOnBlur, handleKeyDown, shifts, paused } = useCursor(
     input,
     clearInput,
     scrollToBottom
   );
-
-  const refInput = useRef<HTMLInputElement | null>(null);
-
-  function handleFakeInputClick() {
-    // Focus the hidden input when clicking on the fake one
-    if (refInput.current) {
-      refInput.current.focus();
-    }
-  }
 
   const cursorPosition = input.length - shifts;
 
@@ -36,16 +33,13 @@ const CustomCaret = ({ input, handleInput, clearInput, scrollToBottom }: CustomC
   return (
     <div>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <div
-        className={`${styles.inputMirror} ${paused ? styles.paused : styles.blink}`}
-        onClick={handleFakeInputClick}
-      >
+      <div className={`${styles.inputMirror} ${paused ? styles.paused : styles.blink}`}>
         {beforeCursor}
         <span data-cursorChar={inCursor}>{inCursor}</span>
         {afterCursor}
       </div>
       <input
-        ref={refInput}
+        ref={inputRef}
         className={styles.inputHidden}
         onKeyDown={handleKeyDown}
         onChange={(e) => handleInput(e.target.value)}
