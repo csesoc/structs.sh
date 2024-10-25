@@ -1,9 +1,12 @@
 // TODO: Proper rework on this file => we want to re-design this anyway. I can't fix lint now because it will potentially change functioanlity of the file
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from 'styles/Console.module.css';
 import classNames from 'classnames';
 import { useGlobalStore } from 'visualiser-debugger/Store/globalStateStore';
+import { useFrontendStateStore } from 'visualiser-debugger/Store/frontendStateStore';
+import { useUserFsStateStore } from 'visualiser-debugger/Store/userFsStateStore';
 import CustomCaret from './CustomCaret';
+import { IFileFileNode } from '../FileTree/FS/IFileSystem';
 
 type ConsoleProp = {
   scrollToBottom: () => void;
@@ -16,6 +19,16 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
   const inputElement = useRef<HTMLInputElement>(null);
 
   const consoleChunks = useGlobalStore((state) => state.consoleChunks);
+  const isCompiled = useFrontendStateStore((state) => state.isActive);
+  const appendConsoleChunks = useGlobalStore((state) => state.appendConsoleChunks);
+  const { fileSystem, currFocusFilePath } = useUserFsStateStore();
+
+  useEffect(() => {
+    if (isCompiled) {
+      const file = fileSystem.getFileFromPath(currFocusFilePath) as IFileFileNode;
+      appendConsoleChunks(`${PREFIX}gcc -g ${file.name} -o a\n`);
+    }
+  }, [isCompiled]);
 
   const handleInput = (currInput: string) => {
     // Ensure structs.sh prefix can't be deleted
