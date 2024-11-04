@@ -27,10 +27,18 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
     if (isCompiled) {
       const file = fileSystem.getFileFromPath(currFocusFilePath) as IFileFileNode;
       appendConsoleChunks(`${PREFIX}gcc -g ${file.name} -o a\n`);
+      setInput('');
+    } else {
+      setInput(PREFIX);
     }
   }, [isCompiled]);
 
   const handleInput = (currInput: string) => {
+    if (isCompiled) {
+      setInput(currInput);
+      return;
+    }
+
     // Ensure structs.sh prefix can't be deleted
     if (currInput.startsWith(PREFIX)) {
       setInput(currInput);
@@ -38,10 +46,12 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
   };
 
   const clearInput = () => {
-    setInput(PREFIX);
-    if (inputElement.current) {
-      inputElement.current.innerText = '';
+    if (isCompiled) {
+      setInput('');
+      return;
     }
+
+    setInput(PREFIX);
   };
 
   const focus = () => {
@@ -50,7 +60,7 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
 
   const splitChunks = (chunk: string[]) => {
     const joinedChunks = chunk.join('');
-    return joinedChunks.split('\n');
+    return joinedChunks.split('\n').filter((c) => c !== '');
   };
 
   return (
@@ -68,7 +78,7 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
     >
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {splitChunks(consoleChunks).map((chunk: string, index: number) => (
-          <div key={index}>{chunk}</div>
+          <div key={`${chunk}-${index}`}>{chunk}</div>
         ))}
       </div>
       <div className={styles.inputContainer}>
@@ -78,6 +88,7 @@ const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
           clearInput={clearInput}
           scrollToBottom={scrollToBottom}
           inputRef={inputElement}
+          isCompiled={isCompiled}
         />
       </div>
     </div>

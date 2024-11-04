@@ -2,7 +2,12 @@ import { useState } from 'react';
 import useSocketClientStore from 'Services/socketClient';
 import { useGlobalStore } from 'visualiser-debugger/Store/globalStateStore';
 
-function useCursor(content: string, clearInput: () => void, scrollToBottom: () => void) {
+function useCursor(
+  content: string,
+  clearInput: () => void,
+  scrollToBottom: () => void,
+  isCompiled: boolean
+) {
   const socket = useSocketClientStore((state) => state.socketClient);
   const appendConsoleChunk = useGlobalStore((state) => state.appendConsoleChunks);
 
@@ -52,6 +57,13 @@ function useCursor(content: string, clearInput: () => void, scrollToBottom: () =
         break;
       case 'Enter':
         {
+          if (isCompiled) {
+            socket.serverAction.sendStdin(content);
+            appendConsoleChunk(`${content}\n`);
+            clearInput();
+            scrollToBottom();
+            return;
+          }
           const removedPrefixInput = removeStructsPrefix(content);
           if (removedPrefixInput.length > 0) {
             socket.serverAction.sendStdin(removedPrefixInput);
