@@ -70,6 +70,9 @@ export const useSocketCommunication = () => {
         acknowledgedEOF: () => {
           console.log('Debugger sent acknowledged EOF signal');
         },
+        acknowledgedSIGINT: () => {
+          console.log('Debugger sent acknowledged SIGINT signal');
+        },
         compileError: (errors: string[]) => {
           appendConsoleChunks([...errors]);
           updateCurrFocusedTab('2');

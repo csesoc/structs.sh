@@ -232,6 +232,30 @@ def EOF(socket_id: str) -> None:
 
 
 @io.event
+def SIGINT(socket_id: str) -> None:
+    proc: subprocess.Popen = procs[socket_id]
+    if proc is None:
+        raise Exception(f"executeNext: No subprocess found for user with socket_id {socket_id}")
+
+    print(f"Found subprocess for FE client socket_id {socket_id}:")
+    print(proc)
+
+    print(f"\n=== Sending '{CUSTOM_NEXT_COMMAND_NAME}' command to gdb instance {proc.pid}")
+    proc.stdin.write(f"{CUSTOM_NEXT_COMMAND_NAME}\n")
+    proc.stdin.flush()
+    get_subprocess_output(proc, TIMEOUT_DURATION)
+
+    # Reading new output from the program relies on the fact that next was
+    # executed just before. This is expected to happen in the call to the custom
+    # next command above.
+    proc.stdin.write(f"python {DEBUG_SESSION_VAR_NAME}.io_manager.read_and_send()\n")
+    proc.stdin.flush()
+    get_subprocess_output(proc, TIMEOUT_DURATION)
+
+    io.emit("acknowledgedSIGINT")
+
+
+@io.event
 def send_stdin(socket_id: str, data: str):
     """
     Send stdin from FE client to gdb instance

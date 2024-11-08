@@ -87,6 +87,11 @@ function useCursor(
       socketClient.serverAction.sendEOF();
       setActive(false);
     }
+
+    if (isCtrlPressed && key === 'c') {
+      socketClient.serverAction.sendSIGINT();
+      setActive(false);
+    }
   }
 
   function handleOnFocus() {
