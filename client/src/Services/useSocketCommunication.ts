@@ -67,6 +67,9 @@ export const useSocketCommunication = () => {
         programWaitingForInput: (_data: any) => {
           // Implement as needed
         },
+        acknowledgedEOF: () => {
+          console.log('Debugger sent acknowledged EOF signal');
+        },
         compileError: (errors: string[]) => {
           appendConsoleChunks([...errors]);
           updateCurrFocusedTab('2');

@@ -72,6 +72,12 @@ class SocketClient {
     sendStdin: (data: any) => {
       this.socket.emit('send_stdin', data);
     },
+    sendEOF: () => {
+      this.socket.emit('EOF');
+    },
+    sendSIGINT: () => {
+      this.socket.emit('SIGINT');
+    },
   };
 }
 

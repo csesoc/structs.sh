@@ -14,6 +14,7 @@ function useCursor(
   const socket = useSocketClientStore((state) => state.socketClient);
   const appendConsoleChunk = useGlobalStore((state) => state.appendConsoleChunks);
   const setActive = useFrontendStateStore((state) => state.setActive);
+  const { socketClient } = useSocketClientStore();
 
   const [shifts, setShifts] = useState(0);
   const [paused, setPaused] = useState(true);
@@ -83,6 +84,7 @@ function useCursor(
     }
 
     if (isCtrlPressed && key === 'd') {
+      socketClient.serverAction.sendEOF();
       setActive(false);
     }
   }
