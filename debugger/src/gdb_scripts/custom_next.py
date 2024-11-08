@@ -421,25 +421,21 @@ def process_malloc_call(malloc_visitor: MallocVisitor, parsed_type_decls: any):
             struct_type_name = stack_var_type_name.strip('*').strip()
             # "struct node*" => "struct node"
 
-            is_ll = False
-            #TODO: Use c_ast to check if SELF is one of the struct field types, NOT gdb (malloc_variables could return a list of objects rather than variable names)
+            # Uses parsed_type_decls to check if SELF is one of the struct field types
+            # This fixes the issue of splitting by commas when there are arrays involved in the struct
             if "struct" in stack_var_type_name: # assume LL's are stored as struct data
                 print("In heap linked list case")
-                for field_whole in struct_fields_str.split(","):
-                    print("BLAHHH", struct_fields_str)
-                    print(f"{field_whole=}")
-                    print(f'p (({stack_var_type_name}) {address})->{field_whole.split("=")[0].strip()}')
-                    # Example:
-                    # (gdb) `p ((struct node*) 0xaaaaedfb62a0)->value`
-                    # $7 = 0
-                    # (gdb) `p ((struct node*) 0xaaaaedfb62a0)->next`
-                    # $8 = (struct node *) 0x0
-                    field_type = gdb.execute(
-                        f'p (({stack_var_type_name}) {address})->{field_whole.split("=")[0].strip()}', to_string=True)
-                    print(f"{field_type=}")
-                    if stack_var_type_name.replace("*", "") in field_type: # "recursive" field
-                        is_ll = True
-                        break
+                for parsed_type in parsed_type_decls:
+                    print("first loop:")
+                    pprint(parsed_type)
+                    if parsed_type['typeName'] in stack_var_type_name:
+                        for field in parsed_type['fields']:
+                            print("second loop:")
+                            pprint(field)
+                            if field['typeName'] == stack_var_type_name:
+                                print("yay")
+                                is_ll = True
+                                break
 
             if is_ll:
                 # === Extract linked list node data given the variable name
