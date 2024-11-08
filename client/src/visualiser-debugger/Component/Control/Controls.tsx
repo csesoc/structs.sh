@@ -19,7 +19,7 @@ const Controls = () => {
   const { currFrame } = useGlobalStore();
   const { userAnnotation, parser } = useGlobalStore().visualizer;
   const { sendCode, bulkSendNextStates, getNextState } = useSocketCommunication();
-  const { states, currentIndex, stepForward, stepBackward, jumpToState, isActive } =
+  const { states, currentIndex, stepForward, stepBackward, jumpToState, isActive, setActive } =
     useFrontendStateStore();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -142,8 +142,10 @@ const Controls = () => {
         disabled={!isActive}
         onClick={async () => {
           if (currentIndex === states.length - 1) {
+            setActive(false);
             setAutoNext(true);
             await getNextState();
+            setActive(true);
           } else {
             stepForward();
           }
