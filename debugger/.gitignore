@@ -13,5 +13,3 @@ ptype_output.o
 *.dYSM
 __pycache__
 venv
-code
-random_useless_file_to_open.txt
