@@ -4,6 +4,14 @@ import Select from 'components/Select';
 import { SelectItem } from 'components/Select/Select';
 import styles from 'styles/Configuration.module.css';
 
+function transformString(input: string): string {
+  return input
+    .toLowerCase()
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 const VisualiserConfiguration = ({
   fields,
   handleUpdateAnnotation,
@@ -32,7 +40,7 @@ const VisualiserConfiguration = ({
     >
       {fields.map((field, index: number) => (
         <SelectItem className={styles.monospaceFont} value={field.name} key={index}>
-          {field.name}
+          {transformString(field.name)}
         </SelectItem>
       ))}
     </Select>

@@ -78,6 +78,7 @@
 
 .monospaceFont {
   font-family: monospace;
+  white-space: nowrap;
 }
 
 .indentedAnnotationArea {
