@@ -224,8 +224,6 @@ def EOF(socket_id: str) -> None:
     # Reading new output from the program relies on the fact that next was
     # executed just before. This is expected to happen in the call to the custom
     # next command above.
-    proc.stdin.write(f"python {DEBUG_SESSION_VAR_NAME}.io_manager.read_and_send()\n")
-    proc.stdin.flush()
     get_subprocess_output(proc, TIMEOUT_DURATION)
 
     io.emit("acknowledgedEOF")
@@ -248,8 +246,6 @@ def SIGINT(socket_id: str) -> None:
     # Reading new output from the program relies on the fact that next was
     # executed just before. This is expected to happen in the call to the custom
     # next command above.
-    proc.stdin.write(f"python {DEBUG_SESSION_VAR_NAME}.io_manager.read_and_send()\n")
-    proc.stdin.flush()
     get_subprocess_output(proc, TIMEOUT_DURATION)
 
     io.emit("acknowledgedSIGINT")
