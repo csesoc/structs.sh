@@ -2,6 +2,7 @@ import { VisualizerType } from '../../../Types/visualizerType';
 // import { assertUnreachable } from '../Util/util';
 import { LinkedListParser } from './linkedListParser';
 import { Parser } from './parser';
+// eslint-disable-next-line import/no-cycle
 import { TreeParser } from './treeParser';
 
 export function parserFactory(visualizerType: VisualizerType): Parser {

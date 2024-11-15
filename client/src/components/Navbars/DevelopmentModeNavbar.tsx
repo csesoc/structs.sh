@@ -20,12 +20,7 @@ const visTypes: AnnotationFieldType[] = [
   {
     name: VisualizerType.BINARY_TREE,
   },
-  {
-    name: VisualizerType.ARRAY,
-  },
-  {
-    name: VisualizerType.GRAPH,
-  },
+  // Add more later
 ];
 
 const DevelopmentModeNavbar = ({
