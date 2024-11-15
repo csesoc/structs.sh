@@ -93,8 +93,6 @@ const DynamicTabs: React.FC<DynamicTabsProps> = (props) => {
               flexGrow: ratios[index],
               flexBasis: 0,
               display: 'flex',
-              // alignItems: 'center',
-              // justifyContent: 'center',
               overflow: 'hidden',
             }}
           >
@@ -115,7 +113,6 @@ const DynamicTabs: React.FC<DynamicTabsProps> = (props) => {
               }}
               onMouseDown={handleMouseDown(index)}
               whileHover={{ backgroundColor: 'darkgray' }}
-              whileTap={{ scale: 1.1 }}
             />
           )}
         </React.Fragment>
