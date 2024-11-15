@@ -1,49 +1,66 @@
-/* eslint-disable */
 // TODO: Proper rework on this file => we want to re-design this anyway. I can't fix lint now because it will potentially change functioanlity of the file
-import React, { Fragment, useRef, useState } from 'react';
-
+import React, { useEffect, useRef, useState } from 'react';
 import styles from 'styles/Console.module.css';
 import classNames from 'classnames';
-import useSocketClientStore from '../../../Services/socketClient';
+import { useGlobalStore } from 'visualiser-debugger/Store/globalStateStore';
+import { useFrontendStateStore } from 'visualiser-debugger/Store/frontendStateStore';
+import { useUserFsStateStore } from 'visualiser-debugger/Store/userFsStateStore';
+import CustomCaret from './CustomCaret';
+import { IFileFileNode } from '../FileTree/FS/IFileSystem';
 
-interface ConsoleProps {
-  chunks: string[];
-  handleAddChunk: (chunk: string) => void;
+type ConsoleProp = {
   scrollToBottom: () => void;
   isActive: boolean;
-}
+};
 
-const Console = ({ chunks, handleAddChunk, scrollToBottom, isActive }: ConsoleProps) => {
-  const [input, setInput] = useState('');
+const Console = ({ scrollToBottom, isActive }: ConsoleProp) => {
+  const PREFIX = 'structs.sh % ';
+  const [input, setInput] = useState(PREFIX);
   const inputElement = useRef<HTMLInputElement>(null);
-  const socket = useSocketClientStore((state) => state.socketClient);
 
-  const handleInput = () => {
-    setInput(inputElement.current?.innerText || '');
+  const consoleChunks = useGlobalStore((state) => state.consoleChunks);
+  const isCompiled = useFrontendStateStore((state) => state.isActive);
+  const appendConsoleChunks = useGlobalStore((state) => state.appendConsoleChunks);
+  const { fileSystem, currFocusFilePath } = useUserFsStateStore();
+
+  useEffect(() => {
+    if (isCompiled) {
+      const file = fileSystem.getFileFromPath(currFocusFilePath) as IFileFileNode;
+      appendConsoleChunks(`${PREFIX}gcc -g ${file.name} -o a\n`);
+      setInput('');
+    } else {
+      setInput(PREFIX);
+    }
+  }, [isCompiled]);
+
+  const handleInput = (currInput: string) => {
+    if (isCompiled) {
+      setInput(currInput);
+      return;
+    }
+
+    // Ensure structs.sh prefix can't be deleted
+    if (currInput.startsWith(PREFIX)) {
+      setInput(currInput);
+    }
   };
 
   const clearInput = () => {
-    setInput('');
-    if (inputElement.current) {
-      inputElement.current.innerText = '';
+    if (isCompiled) {
+      setInput('');
+      return;
     }
-  };
 
-  const handleKey = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-    if (event.key === 'Enter') {
-      if (input.length > 0) {
-        socket.serverAction.sendStdin(input);
-        handleAddChunk(`${input}\n`);
-        clearInput();
-        scrollToBottom();
-      }
-
-      event.preventDefault();
-    }
+    setInput(PREFIX);
   };
 
   const focus = () => {
     inputElement.current?.focus();
+  };
+
+  const splitChunks = (chunk: string[]) => {
+    const joinedChunks = chunk.join('');
+    return joinedChunks.split('\n').filter((c) => c !== '');
   };
 
   return (
@@ -59,22 +76,21 @@ const Console = ({ chunks, handleAddChunk, scrollToBottom, isActive }: ConsolePr
       role="button"
       tabIndex={0}
     >
-      {chunks.map((chunk: string, index: number) => (
-        <Fragment key={index}>
-          <code>{chunk.replace(/\n$/, '')}</code>
-          {chunk.endsWith('\n') && <br />}
-        </Fragment>
-      ))}
-      <code
-        className={styles.input}
-        key="input"
-        onInput={handleInput}
-        onKeyDown={handleKey}
-        ref={inputElement}
-        contentEditable
-        suppressContentEditableWarning
-        spellCheck={false}
-      />
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {splitChunks(consoleChunks).map((chunk: string, index: number) => (
+          <div key={`${chunk}-${index}`}>{chunk}</div>
+        ))}
+      </div>
+      <div className={styles.inputContainer}>
+        <CustomCaret
+          input={input}
+          handleInput={handleInput}
+          clearInput={clearInput}
+          scrollToBottom={scrollToBottom}
+          inputRef={inputElement}
+          isCompiled={isCompiled}
+        />
+      </div>
     </div>
   );
 };

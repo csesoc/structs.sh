@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { Tabs, Tab } from 'components/Tabs';
 import Console from 'visualiser-debugger/Component/Console/Console';
 import Joyride from 'react-joyride';
+import DynamicTabs from 'components/TabResize/DynamicTabs';
 import DevelopmentModeNavbar from '../components/Navbars/DevelopmentModeNavbar';
 import Configuration from './Component/Configuration/Configuration';
 import Controls from './Component/Control/Controls';
@@ -14,20 +15,15 @@ import VisualizerMain from './Component/VisualizerMain';
 import FileManager from './Component/FileTree/FileManager';
 import { useGlobalStore } from './Store/globalStateStore';
 import { useSocketCommunication } from '../Services/useSocketCommunication';
-import { useFrontendStateStore } from './Store/frontendStateStore';
 import { useUserFsStateStore } from './Store/userFsStateStore';
 import { onboardingStore, handleJoyrideCallback, OPEN_FILE_STEP } from './Store/onboardingStore';
 
 const DevelopmentMode = () => {
-  const { isActive } = useFrontendStateStore();
   const inputElement = useRef<HTMLInputElement>(null);
   const { uiState, updateCurrFocusedTab } = useGlobalStore();
-  const { consoleChunks, setConsoleChunks } = useSocketCommunication();
   const { run, stepIndex, steps, onboardingCurrFile } = onboardingStore();
   const { resetRootPaths } = useUserFsStateStore();
-  const handleAddConsoleChunk = (chunk: string) => {
-    setConsoleChunks([...consoleChunks, chunk]);
-  };
+  const { activeSession } = useSocketCommunication();
 
   const scrollToBottom = () => {
     if (inputElement?.current?.parentElement) {
@@ -88,8 +84,11 @@ const DevelopmentMode = () => {
             }}
           />
         </div>
-        <div className={classNames('Onboarding-codeEditor', styles.pane, styles.editor)}>
-          <CodeEditor />
+        <div className={classNames('Onboarding-codeEditor', styles.editor)}>
+          <DynamicTabs direction="vertical" minHeightRatio={[0.1, 0.2]} initialSize="100%">
+            <CodeEditor />
+            <Console scrollToBottom={scrollToBottom} isActive={activeSession} />
+          </DynamicTabs>
         </div>
         <div className={classNames('Onboarding-inspectionMenu', styles.pane, styles.inspector)}>
           <Tabs value={uiState.currFocusedTab} onValueChange={updateCurrFocusedTab}>
@@ -103,14 +102,6 @@ const DevelopmentMode = () => {
             </Tab>
             <Tab label="Inspect">
               <StackInspector />
-            </Tab>
-            <Tab label="Console">
-              <Console
-                chunks={consoleChunks}
-                handleAddChunk={handleAddConsoleChunk}
-                scrollToBottom={scrollToBottom}
-                isActive={isActive}
-              />
             </Tab>
           </Tabs>
         </div>

@@ -25,7 +25,9 @@ export const useSocketCommunication = () => {
   const { clearFrontendState } = useFrontendStateStore();
 
   const { socketClient } = useSocketClientStore();
-  const [consoleChunks, setConsoleChunks] = useState<string[]>([]);
+  const [activeSession] = useState<boolean>(false);
+  const resetConsoleChunks = useGlobalStore((state) => state.resetConsoleChunks);
+  const appendConsoleChunks = useGlobalStore((state) => state.appendConsoleChunks);
   const { updateCurrFocusedTab } = useGlobalStore();
   const { setToastMessage: setMessage } = useToastStateStore();
 
@@ -60,13 +62,19 @@ export const useSocketCommunication = () => {
           updateNextFrame(state);
         },
         sendStdoutToUser: (output: string) => {
-          setConsoleChunks((prev) => [...prev, output]);
+          appendConsoleChunks([...output]);
         },
         programWaitingForInput: (_data: any) => {
           // Implement as needed
         },
+        acknowledgedEOF: () => {
+          console.log('Debugger sent acknowledged EOF signal');
+        },
+        acknowledgedSIGINT: () => {
+          console.log('Debugger sent acknowledged SIGINT signal');
+        },
         compileError: (errors: string[]) => {
-          setConsoleChunks((prev) => [...prev, ...errors]);
+          appendConsoleChunks([...errors]);
           updateCurrFocusedTab('2');
         },
         send_stdin: (_data: string) => {},
@@ -83,7 +91,7 @@ export const useSocketCommunication = () => {
     setActive(false);
     clearTypeDeclarations();
     clearUserAnnotation();
-    setConsoleChunks([]);
+    resetConsoleChunks();
   }, []);
 
   const sendCode = useCallback(() => {
@@ -162,8 +170,9 @@ export const useSocketCommunication = () => {
   );
 
   return {
-    consoleChunks,
-    setConsoleChunks,
+    resetConsoleChunks,
+    appendConsoleChunks,
+    activeSession,
     sendCode,
     getNextState: executeNextWithRetry,
     bulkSendNextStates,
