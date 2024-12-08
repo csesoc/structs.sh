@@ -56,7 +56,7 @@ async def test_fibonacci():
         assert fibonacci["b"].type == "int"
         assert fibonacci["b"].value == 1
         assert fibonacci["next"].type == "int"
-        assert fibonacci["next"].value == 0
+        assert fibonacci["next"].value == 0xBEEF
 
         main = frames[(1, "main")]
         assert len(main) == 1
@@ -66,7 +66,7 @@ async def test_fibonacci():
         assert memory[fibonacci["n"].address, "int"].value == 10
         assert memory[fibonacci["a"].address, "int"].value == 0
         assert memory[fibonacci["b"].address, "int"].value == 1
-        assert memory[fibonacci["next"].address, "int"].value == 0
+        assert memory[fibonacci["next"].address, "int"].value == 0xBEEF
         assert memory[main["n"].address, "int"].value == 10
 
         await debug.finish()

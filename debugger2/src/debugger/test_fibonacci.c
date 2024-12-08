@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 void fibonacci(int n) {
-    int a = 0, b = 1, next;
+    int a = 0, b = 1, next = 0xbeef;
     printf("Fibonacci sequence up to %d terms:\n", n);
     for (int i = 1; i <= n; i++) {
         printf("%d ", a);

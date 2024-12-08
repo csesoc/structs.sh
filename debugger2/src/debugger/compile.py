@@ -5,7 +5,7 @@ from pathlib import Path
 
 async def compile(source_path: str | Path, output_path: str | Path) -> None:
     clang = await create_subprocess_exec(
-        "clang",
+        "gcc",
         str(source_path),
         "-o",
         str(output_path),
