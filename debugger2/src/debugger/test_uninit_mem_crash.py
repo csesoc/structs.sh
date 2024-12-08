@@ -6,9 +6,7 @@ from debugger import Debugger, compile
 here = Path(__file__).parent
 
 
-async def test_uninitialized():
-    # Shouldn't crash from uninitialized/junk memory
-
+async def test_uninit_mem_crash():
     source = here / "test_uninitialized.c"
     exe = here / "test_uninitialized"
     await compile(source, exe)
