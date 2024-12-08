@@ -150,4 +150,4 @@ if __name__ == "__main__":
     info(" > ^ < ")
     info(f"Server is available at [http://{host}:{port}]")
 
-    run("server:app", port=port, host=host, log_level="error")
+    run("__main__:app", port=port, host=host, log_level="error")
