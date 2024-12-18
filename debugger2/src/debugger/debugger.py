@@ -80,9 +80,11 @@ class Debugger(BaseDebugger):
         type = res["type"]
 
         res = await self.run_command("-var-list-children VARIABLE")
-        childs = []
-        if res["numchild"] != "0":
-            childs.extend((c["exp"], c["type"]) for c in res["children"])
+        childs = (
+            [(c["exp"], c["type"]) for c in res["children"]]
+            if res["numchild"] != "0"
+            else []
+        )
         await self.run_command("-var-delete VARIABLE")
 
         res = await self.run_command(f"-data-evaluate-expression {var}")
@@ -122,9 +124,9 @@ class Debugger(BaseDebugger):
         structs: dict[str, list[tuple[str, str]]] = {}  # legacy
 
         for i, frame in enumerate(await self.frames()):
-            vars = dict[str, Obj]()
             queue = deque()
 
+            vars = dict[str, Obj]()
             for var in await self.variables(i):
                 type, value, addr, childs = await self.var_details(var, i)
                 vars[var] = Obj(type, value, addr)
@@ -141,10 +143,8 @@ class Debugger(BaseDebugger):
                     type, value, addr, childs = await self.var_details(var, i)
                 except ValueError:
                     continue
-
                 if (addr, type) in addresses:
                     continue
-
                 addresses[addr, type] = Obj(type, value, addr)
                 if (
                     childs
@@ -198,7 +198,9 @@ class Debugger(BaseDebugger):
             "heap_data": {
                 addr: {"addr": addr, "typeName": o.type, "value": o.value}
                 for (addr, _), o in reversed(memory.items())
-                if "*" not in o.type and "struct" in o.type
+                if "*" not in o.type
+                and "struct" in o.type
+                and not o.addr.startswith("0xffff")
             },
         }
 

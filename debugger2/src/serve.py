@@ -117,9 +117,6 @@ async def executeNext(sid: str) -> None:
             json.loads(json.dumps(type, default=asdict)),
             to=sid,
         )
-
-    pp(json.loads(json.dumps(legacy_mem, default=asdict)))
-
     await server.emit(
         "sendBackendStateToUser",
         json.loads(json.dumps(legacy_mem, default=asdict)),

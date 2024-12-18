@@ -13,10 +13,6 @@ import os
 from . import mion
 
 
-def panic(*args, **kwargs):
-    raise AssertionError(*args, **kwargs)
-
-
 class BaseDebugger:
     def __init__(self) -> None:
         do_nothing = lambda *args, **kwargs: None
@@ -76,6 +72,8 @@ class BaseDebugger:
         return result
 
     async def console(self, command: str):
+        """Experimental"""
+
         self.stream_queue = deque[str](maxlen=None)
         self.process.stdin.write(
             f'-interpreter-exec console "{command}"\n'.encode()
@@ -125,7 +123,9 @@ class BaseDebugger:
                 case _ if kind in mion.STREAM:
                     self.stream_queue.append(message)
                 case _:
-                    panic(f"Received unknown message from GDB: {kind}")
+                    raise ValueError(
+                        f"Received unknown message kind from GDB: {kind}"
+                    )
 
     async def _inferior_dispatch(self) -> None:
         self._inferior_dispatch_done.clear()

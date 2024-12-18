@@ -34,18 +34,20 @@ async def main():
         for function in functions:
             await debug.breakpoint(function)
 
-        # res = await debug.run_command("-symbol-info-types")
-        # custom_types = [
-        #     sym["name"]
-        #     for file in res["symbols"]["debug"]
-        #     for sym in file["symbols"]
-        #     if "line" in sym
-        # ]
-        # for type in custom_types:
-        #     try:
-        #         pp(await debug.console(f"ptype struct {type}"))
-        #     except ValueError:
-        #         continue
+        # --- experimental
+        res = await debug.run_command("-symbol-info-types")
+        custom_types = [
+            sym["name"]
+            for file in res["symbols"]["debug"]
+            for sym in file["symbols"]
+            if "line" in sym
+        ]
+        for type in custom_types:
+            try:
+                pp(await debug.console(f"ptype struct {type}"))
+            except ValueError:
+                continue
+        # ---
 
         await debug.run()
         print(await debug.frames())
