@@ -1,3 +1,5 @@
+from dataclasses import asdict
+import json
 from pprint import pp
 from tempfile import mkstemp
 from pathlib import Path
@@ -37,6 +39,8 @@ class State:
         self.source.write_text(code)
         await compile(self.source, self.exe)
         await self.debugger.init(self.exe)
+
+        self.seen = set()
         return self
 
     async def deinit(self):
@@ -103,25 +107,24 @@ async def executeNext(sid: str) -> None:
         "executeNext", "Finished executeNext event on server-side", to=sid
     )
 
-    # try to construct something that the frontend can understand
-    result = dict[str, any]()
-    frame = (await debugger.frames())[0]
-    result["frame_info"] = {
-        "file": frame.file,
-        "function": frame.func,
-        "line_num": frame.line,
-    }
-    frames, memory = await debugger.trace()
-    result["stack_data"] = {
-        k: {"addr": v.address, "typeName": v.type, "value": v.value}
-        for k, v in next(iter(frames.values())).items()
-    }
-    result["heap_data"] = {
-        addr: {"addr": addr, "typeName": v.type, "value": v.value}
-        for (addr, _), v in reversed(memory.items())
-        if "*" not in v.type and "struct" in v.type
-    }
-    await server.emit("sendBackendStateToUser", result, to=sid)
+    legacy_types, legacy_mem = await debugger.legacy_trace()
+    for type in legacy_types:
+        if type["typeName"] in state[sid].seen:
+            continue
+        state[sid].seen.add(type["typeName"])
+        await server.emit(
+            "sendTypeDeclaration",
+            json.loads(json.dumps(type, default=asdict)),
+            to=sid,
+        )
+
+    pp(json.loads(json.dumps(legacy_mem, default=asdict)))
+
+    await server.emit(
+        "sendBackendStateToUser",
+        json.loads(json.dumps(legacy_mem, default=asdict)),
+        to=sid,
+    )
 
 
 @server.event

@@ -7,7 +7,8 @@ import json
 """(GDB) MI object notation"""
 
 RESULT = "^"
-RESULT_CLASS = {"done", "running", "connected", "error", "exit"}
+RESULT_ERROR = "error"
+RESULT_CLASS = {"done", "running", "connected", RESULT_ERROR, "exit"}
 
 EXEC_ASYNC = "*"
 STATUS_ASYNC = "+"
@@ -58,6 +59,10 @@ def valueloads(result: str) -> any:
     result = _remove_octals(result)
     result = _remove_array_keys(result)
     result = _remove_hexnums(result)
+    result = sub(r"= (\d+) '[^']+'", r"= \1", result)  # char aliases
+    result = sub(
+        r"= (\"0x[0-9a-zA-Z]+\") <[^>]+>", r"= \1", result
+    )  # function aliases
     result = sub(r"([a-zA-Z\-_]+) =", r'"\1":', result)
     return json.loads(result)
 

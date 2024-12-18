@@ -41,33 +41,33 @@ async def test_fibonacci():
         await debug.next()
         assert (await debug.variables()).keys() == {"n", "a", "b", "next", "i"}
 
-        frames, memory = await debug.trace()
+        frames, memory, _ = await debug.trace()
         assert len(frames) == 2
         assert len(memory) == 6
 
-        fibonacci = frames[(0, "fibonacci")]
-        assert len(fibonacci) == 5
-        assert fibonacci["i"].type == "int"
-        assert fibonacci["i"].value == 1
-        assert fibonacci["n"].type == "int"
-        assert fibonacci["n"].value == 10
-        assert fibonacci["a"].type == "int"
-        assert fibonacci["a"].value == 0
-        assert fibonacci["b"].type == "int"
-        assert fibonacci["b"].value == 1
-        assert fibonacci["next"].type == "int"
-        assert fibonacci["next"].value == 0xBEEF
+        fibonacci = frames[0]
+        assert len(fibonacci.vars) == 5
+        assert fibonacci.vars["i"].type == "int"
+        assert fibonacci.vars["i"].value == 1
+        assert fibonacci.vars["n"].type == "int"
+        assert fibonacci.vars["n"].value == 10
+        assert fibonacci.vars["a"].type == "int"
+        assert fibonacci.vars["a"].value == 0
+        assert fibonacci.vars["b"].type == "int"
+        assert fibonacci.vars["b"].value == 1
+        assert fibonacci.vars["next"].type == "int"
+        assert fibonacci.vars["next"].value == 0xBEEF
 
-        main = frames[(1, "main")]
-        assert len(main) == 1
-        assert main["n"].type == "int"
+        main = frames[1]
+        assert len(main.vars) == 1
+        assert main.vars["n"].type == "int"
 
-        assert memory[fibonacci["i"].address, "int"].value == 1
-        assert memory[fibonacci["n"].address, "int"].value == 10
-        assert memory[fibonacci["a"].address, "int"].value == 0
-        assert memory[fibonacci["b"].address, "int"].value == 1
-        assert memory[fibonacci["next"].address, "int"].value == 0xBEEF
-        assert memory[main["n"].address, "int"].value == 10
+        assert memory[fibonacci.vars["i"].addr, "int"].value == 1
+        assert memory[fibonacci.vars["n"].addr, "int"].value == 10
+        assert memory[fibonacci.vars["a"].addr, "int"].value == 0
+        assert memory[fibonacci.vars["b"].addr, "int"].value == 1
+        assert memory[fibonacci.vars["next"].addr, "int"].value == 0xBEEF
+        assert memory[main.vars["n"].addr, "int"].value == 10
 
         await debug.finish()
 

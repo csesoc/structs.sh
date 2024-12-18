@@ -5,6 +5,7 @@ from asyncio import to_thread
 from asyncio import Event
 from asyncio import iscoroutinefunction
 from asyncio.subprocess import PIPE
+from collections import deque
 from contextlib import suppress
 from pathlib import Path
 import os
@@ -42,6 +43,7 @@ class BaseDebugger:
         )
 
         self.result_queue = Queue[tuple[str, dict]]()
+        self.stream_queue = deque[str](maxlen=0)
         create_task(self._stdout_dispatch())
         create_task(self._inferior_dispatch())
         self._did_init = True
@@ -51,7 +53,7 @@ class BaseDebugger:
         if not self._did_init:
             return
 
-        self.process.stdin.write_eof()  # or write `-gdb-exit`
+        self.process.stdin.write_eof()
         await self.process.stdin.drain()
         await self.process.wait()
 
@@ -68,10 +70,30 @@ class BaseDebugger:
 
         subkind, result = await self.result_queue.get()
         self.result_queue.task_done()
-        assert (
-            subkind in mion.RESULT_CLASS
-        ), f"Command '{command}' returned unexpected status {subkind}"
+        if subkind == mion.RESULT_ERROR:
+            raise ValueError(result["msg"])
+        assert subkind in mion.RESULT_CLASS
         return result
+
+    async def console(self, command: str):
+        self.stream_queue = deque[str](maxlen=None)
+        self.process.stdin.write(
+            f'-interpreter-exec console "{command}"\n'.encode()
+        )
+
+        subkind, result = await self.result_queue.get()
+        self.result_queue.task_done()
+        if subkind == mion.RESULT_ERROR:
+            raise ValueError(result["msg"])
+        assert subkind in mion.RESULT_CLASS
+        assert result == {}
+
+        res = "".join(
+            line[1:-1].encode().decode("unicode_escape")
+            for line in self.stream_queue
+        )
+        self.stream_queue = deque[str](maxlen=0)
+        return res
 
     def on_oob[F](self, func: F) -> F:
         """oob = out of band"""
@@ -101,10 +123,7 @@ class BaseDebugger:
                     else:
                         self.oob_handler((subkind, mion.loads(message)))
                 case _ if kind in mion.STREAM:
-                    if iscoroutinefunction(self.oob_handler):
-                        await self.oob_handler(message)
-                    else:
-                        self.oob_handler(message)
+                    self.stream_queue.append(message)
                 case _:
                     panic(f"Received unknown message from GDB: {kind}")
 

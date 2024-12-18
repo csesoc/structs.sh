@@ -1,41 +1,45 @@
+from __future__ import annotations
 from collections import deque
 from contextlib import suppress
 from dataclasses import dataclass
 from json import JSONDecodeError
+from typing import TypedDict
 
 from debugger import mion
 
 from .base_debugger import BaseDebugger
 
 
-@dataclass
+@dataclass(slots=True, frozen=True)
 class Frame:
     func: str
     file: str
     line: int
 
 
-@dataclass
-class Variable:
-    type: str
-    value: str
-    address: str
+@dataclass(slots=True, frozen=True)
+class FullFrame:
+    frame: Frame
+    vars: dict[str, Obj]
 
 
-@dataclass
-class MemoryObject:
+@dataclass(slots=True, frozen=True)
+class Obj:
     type: str
-    value: str
+    value: str | Obj
+    addr: str | None
 
 
 class Debugger(BaseDebugger):
     async def functions(self) -> list[str]:
-        """
-        Don't call this when the inferior process is already running,
-        it returns many, many more functions than expected.
-        """
+        """Do not call while the inferior process is running"""
+
         res = await self.run_command("-symbol-info-functions")
-        return [sym["name"] for sym in res["symbols"]["debug"][0]["symbols"]]
+        return [
+            sym["name"]
+            for file in res["symbols"]["debug"]
+            for sym in file["symbols"]
+        ]
 
     async def breakpoint(self, function: str) -> int:
         res = await self.run_command(f"-break-insert {function}")
@@ -68,7 +72,7 @@ class Debugger(BaseDebugger):
 
     async def var_details(
         self, var: str, frame: int = 0
-    ) -> tuple[str, str, str, list[tuple[str, str]]]:
+    ) -> tuple[str, str | dict, str, list[tuple[str, str]]]:
         await self.run_command(f"-stack-select-frame {frame}")
 
         await self.run_command(f"-var-create VARIABLE * {var}")
@@ -82,21 +86,11 @@ class Debugger(BaseDebugger):
         await self.run_command("-var-delete VARIABLE")
 
         res = await self.run_command(f"-data-evaluate-expression {var}")
-        if res.get("msg", "").startswith("Cannot access memory at address"):
-            raise ValueError("Cannot access such memory. Is it initialised?")
-
         value = res["value"]
         with suppress(JSONDecodeError):
             value = mion.valueloads(res["value"])
-        # if childs and isinstance(value, dict):
-        #     # TODO: refactorme
-        #     value = {
-        #         k: {"value": v, "typeName": c[1]}
-        #         for (k, v), c in zip(value.items(), childs)
-        #     }
 
         res = await self.run_command(f"-data-evaluate-expression &{var}")
-        # assert "value" in res, (res, variable, (type, children))
         address = res["value"].split(" ", 1)[0]
 
         await self.run_command(f"-stack-select-frame 0")
@@ -123,34 +117,89 @@ class Debugger(BaseDebugger):
                     queue.append(f"({var}.{subname})")
             return queue
 
-        frames: dict[tuple[int, str], dict[str, Variable]] = {}
-        addresses: dict[tuple[str, str], MemoryObject] = {}
+        frames = list[FullFrame]()
+        addresses: dict[tuple[str, str], Obj] = {}
+        structs: dict[str, list[tuple[str, str]]] = {}  # legacy
 
         for i, frame in enumerate(await self.frames()):
-            frames[(i, frame.func)] = {}
+            vars = dict[str, Obj]()
             queue = deque()
 
             for var in await self.variables(i):
-                type, value, address, children = await self.var_details(var, i)
-                frames[(i, frame.func)][var] = Variable(type, value, address)
-                addresses[(address, type)] = MemoryObject(type, value)
+                type, value, addr, childs = await self.var_details(var, i)
+                vars[var] = Obj(type, value, addr)
+                addresses[addr, type] = Obj(type, value, addr)
+                if childs and not type.endswith("*"):
+                    structs[type] = childs
                 if value != "0x0" and type != "void *":
-                    queue.extend(follow(var, type, children))
+                    queue.extend(follow(var, type, childs))
+            frames.append(FullFrame(frame, vars))
 
             while queue:
                 var = queue.popleft()
                 try:
-                    type, value, address, children = await self.var_details(
-                        var, i
-                    )
+                    type, value, addr, childs = await self.var_details(var, i)
                 except ValueError:
                     continue
 
-                if (address, type) in addresses:
+                if (addr, type) in addresses:
                     continue
 
-                addresses[(address, type)] = MemoryObject(type, value)
+                addresses[addr, type] = Obj(type, value, addr)
+                if (
+                    childs
+                    and not type.endswith("*")
+                    and not type.endswith("[]")
+                ):
+                    try:
+                        structs[type] = childs
+                        addresses[addr, type] = Obj(
+                            type,
+                            {
+                                name: Obj(type, value[name], None)
+                                for name, type in childs
+                            },
+                            addr,
+                        )  # legacy
+                    except Exception:
+                        assert False, (
+                            [(name, type) for name, type in childs],
+                            value,
+                        )
                 if value != "0x0" and type != "void *":
-                    queue.extend(follow(var, type, children))
+                    queue.extend(follow(var, type, childs))
 
-        return frames, addresses
+        return frames, addresses, structs
+
+    async def legacy_trace(self):
+        frame = (await self.frames())[0]
+        frames, memory, types = await self.trace()
+
+        legacy_types = [
+            {
+                "typeName": name,
+                "fields": [
+                    {"name": name, "typeName": type} for name, type in childs
+                ],
+            }
+            for name, childs in types.items()
+        ]
+
+        legacy_mem = {
+            "frame_info": {
+                "file": frame.file,
+                "function": frame.func,
+                "line_num": frame.line,
+            },
+            "stack_data": {
+                name: {"addr": o.addr, "typeName": o.type, "value": o.value}
+                for name, o in frames[0].vars.items()
+            },
+            "heap_data": {
+                addr: {"addr": addr, "typeName": o.type, "value": o.value}
+                for (addr, _), o in reversed(memory.items())
+                if "*" not in o.type and "struct" in o.type
+            },
+        }
+
+        return legacy_types, legacy_mem

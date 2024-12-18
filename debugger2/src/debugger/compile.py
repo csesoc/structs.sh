@@ -9,7 +9,7 @@ async def compile(source_path: str | Path, output_path: str | Path) -> None:
         str(source_path),
         "-o",
         str(output_path),
-        "-g",
+        "-ggdb",
         "-O0",
         # "-Wall",
         # "-Wextra",
