@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { ServerToClientEvent } from './socketClientType';
 import { ClientToServerEvents } from './socketServerType';
 
-const URL = import.meta.env.VITE_DEBUGGER_URL || 'http://localhost:8000';
+const URL = import.meta.env.VITE_DEBUGGER_URL || 'https://localhost:8000';
 
 class SocketClient {
   socket: Socket<ServerToClientEvent, ClientToServerEvents>;
