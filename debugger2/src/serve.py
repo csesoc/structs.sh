@@ -139,7 +139,7 @@ async def send_stdin(sid: str) -> None:
     error("event 'send_stdin' not implemented")
 
 
-app = ASGIApp(server)
+app = ASGIApp(server, socketio_path="/debugger")
 
 if __name__ == "__main__":
     host = "0.0.0.0"
@@ -148,6 +148,6 @@ if __name__ == "__main__":
     info(" /\\_/\\ ")
     info("( ^.^ )")
     info(" > ^ < ")
-    info(f"Server is available at [http://{host}:{port}]")
+    info(f"Server is available at [http://localhost:{port}/]")
 
     run("__main__:app", port=port, host=host, log_level="error")

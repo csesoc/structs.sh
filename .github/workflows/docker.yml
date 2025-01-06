@@ -40,7 +40,7 @@ jobs:
             ghcr.io/csesoc/structs-${{ matrix.component }}:${{ github.sha }}
             ghcr.io/csesoc/structs-${{ matrix.component }}:latest
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: "VITE_DEBUGGER_URL=https://structs.sh/debugger"
+          build-args: "VITE_DEBUGGER_URL=https://structs.sh"
   deploy:
     name: Deploy (CD)
     runs-on: ubuntu-latest
