@@ -1,30 +1,9 @@
-from debian:stable-slim
+from python:3.13.1-bookworm
 
 workdir /app
 
 run apt-get update -y
-run apt-get install -y gdb curl
-
-run apt-get install -y \
-    build-essential \
-    libncursesw5-dev \
-    libreadline-dev \
-    libssl-dev \
-    libsqlite3-dev \
-    libgdbm-dev \
-    libffi-dev \
-    zlib1g-dev \
-    libbz2-dev \
-    libexpat1-dev \
-    liblzma-dev \
-    tk-dev \
-    uuid-dev
-run curl -o Python-3.13.1.tar.xz 'https://www.python.org/ftp/python/3.13.1/Python-3.13.1.tar.xz'
-run tar -xf Python-3.13.1.tar.xz
-run cd Python-3.13.1 && ./configure --enable-optimizations
-run cd Python-3.13.1 && make -j "$(nproc)"
-run cd Python-3.13.1 && make install
-run rm -rf Python-3.13.1.tar.xz Python-3.13.1
+run apt-get install -y gdb
 
 copy requirements.txt .
 run pip3 install -r requirements.txt --root-user-action=ignore
