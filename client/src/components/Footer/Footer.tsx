@@ -73,18 +73,19 @@ const Footer = () => {
             </Typography>
           </Grid>
           <Grid item xs={12} textAlign="center">
-            <Typography color="textPrimary" variant="h4" style={{ marginBottom: '0.7rem'}}>
+            <Typography color="textPrimary" variant="h4" style={{ marginBottom: '0.7rem' }}>
               Our Sponsors
             </Typography>
           </Grid>
           {/* New Grid item for Company Sponsors */}
           <Grid item xs={12} textAlign="center">
-            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem'}}>
+            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
               Platinum Tier
             </Typography>
             <Box display="flex" justifyContent="center" gap={8}>
               {/* TTD logo */}
-              <Link href="https://careers.thetradedesk.com/" target="_blank" rel="noopener noreferrer" >
+              <Link href="https://careers.thetradedesk.com/" 
+              target="_blank" rel="noopener noreferrer">
                   <img
                     src={theTradeDeskLogo}
                     alt="The Trade Desk Logo"
@@ -93,18 +94,18 @@ const Footer = () => {
                   />
                 </Link>
                 {/* Arista Logo */}
-                <Link href="https://www.arista.com/en/" target="_blank" rel="noopener noreferrer" sx={{mr: 8}}>
+                <Link href="https://www.arista.com/en/" target="_blank" rel="noopener noreferrer" sx={{ mr: 8 }}>
                   <img
                     src={aristaLogo}
                     alt="Arista Logo"
                     height={40}
-                    style={{ verticalAlign: 'middle', marginBottom: '0px'}}
+                    style={{ verticalAlign: 'middle', marginBottom: '0px' }}
                   />
                 </Link>
             </Box>
           </Grid>
           <Grid item xs={12} textAlign="center">
-            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem'}}>
+            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
                 Gold Tier
             </Typography>
             <Box display="flex" justifyContent="center" gap={8}>
@@ -114,7 +115,7 @@ const Footer = () => {
                   src={scLogo}
                   alt="SafetyCulture Logo"
                   height={60}
-                  style={{ verticalAlign: 'middle', marginBottom: '0px'}}
+                  style={{ verticalAlign: 'middle', marginBottom: '0px' }}
                 />
               </Link>
               {/* Jane Street Logo */}
@@ -123,7 +124,7 @@ const Footer = () => {
                   src={janeStreetLogo}
                   alt="Jane Street Logo"
                   height={60}
-                  style={{ verticalAlign: 'middle', marginBottom: '0px'}}
+                  style={{ verticalAlign: 'middle', marginBottom: '0px' }}
                 />
               </Link>
             </Box>
