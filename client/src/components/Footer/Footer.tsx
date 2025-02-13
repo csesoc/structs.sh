@@ -6,6 +6,7 @@ import janeStreetLogo from 'assets/img/sponsors/JaneStreetWhite.png';
 import aristaLogo from 'assets/img/sponsors/arista.png';
 import theTradeDeskLogo from 'assets/img/sponsors/theTradeDesk.png';
 import scLogo from 'assets/img/sponsors/sc.png';
+
 const StyledFooter = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   position: 'relative',
@@ -101,7 +102,6 @@ const Footer = () => {
                   />
                 </Link>
             </Box>
-          
           </Grid>
           <Grid item xs={12} textAlign="center">
             <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem'}}>
@@ -127,9 +127,7 @@ const Footer = () => {
                 />
               </Link>
             </Box>
-            
           </Grid>
-        
         </Grid>
       </Container>
       <Box textAlign="center" paddingTop={5}>
