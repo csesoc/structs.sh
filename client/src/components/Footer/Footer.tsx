@@ -4,7 +4,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import structsLogo from 'assets/img/structs.png';
 import tiktokLogo from 'assets/img/tiktokColouredWhite.svg';
 import janeStreetLogo from 'assets/img/JaneStreetWhite.png';
-
+import cseLogo from 'assets/img/affliations/CSE.png'
+import arcLogo from 'assets/img/affliations/arc.png'
+import acncLogo from 'assets/img/affliations/acnc.png'
 const StyledFooter = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   position: 'relative',
@@ -69,6 +71,41 @@ const Footer = () => {
                 Facebook
               </Link>
             </Typography>
+          </Grid>
+          {/* Grid item for affliations */}
+          <Grid item xs={12} textAlign="center">
+            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
+              Our Affliations
+            </Typography>
+            {/* Arc logo */}
+            <Link href="https://www.arc.unsw.edu.au/" target="_blank" rel="noopener noreferrer">
+              <img
+                src={arcLogo}
+                alt="Arc Logo"
+                height={40}
+                style={{ marginRight: '2vw', verticalAlign: 'middle' }}
+              />
+            </Link>
+            {/* ACNC logo */}
+            <Link href="https://www.acnc.gov.au/charity/charities/7fa763bf-0876-ee11-8179-00224893b0ed/profile" target="_blank" rel="noopener noreferrer">
+              <img
+                src={acncLogo}
+                alt="ACNC Logo"
+                height={40}
+                style={{ marginRight: '2vw', verticalAlign: 'middle' }}
+              />
+            </Link>
+
+            {/* CSE logo */}
+            <Link href="https://www.unsw.edu.au/engineering/our-schools/computer-science-and-engineering" target="_blank" rel="noopener noreferrer">
+              <img
+                src={cseLogo}
+                alt="CSE Logo"
+                height={40}
+                style={{ marginRight: '2vw', verticalAlign: 'middle' }}
+              />
+            </Link>
+
           </Grid>
           {/* New Grid item for Company Sponsors */}
           <Grid item xs={12} textAlign="center">
