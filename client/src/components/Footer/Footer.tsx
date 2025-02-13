@@ -2,11 +2,16 @@ import { Box, Container, Grid, Typography, Link } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import structsLogo from 'assets/img/structs.png';
-import tiktokLogo from 'assets/img/tiktokColouredWhite.svg';
-import janeStreetLogo from 'assets/img/JaneStreetWhite.png';
+import janeStreetLogo from 'assets/img/sponsors/JaneStreetWhite.png';
 import cseLogo from 'assets/img/affliations/CSE.png'
 import arcLogo from 'assets/img/affliations/arc.png'
 import acncLogo from 'assets/img/affliations/acnc.png'
+import aristaLogo from 'assets/img/sponsors/arista.png'
+import theTradeDeskLogo from 'assets/img/sponsors/theTradeDesk.png'
+import scLogo from 'assets/img/sponsors/sc.png'
+import imcLogo from 'assets/img/sponsors/imc.png'
+import citadelLogo from 'assets/img/sponsors/citadel.png'
+
 const StyledFooter = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   position: 'relative',
@@ -110,23 +115,69 @@ const Footer = () => {
           {/* New Grid item for Company Sponsors */}
           <Grid item xs={12} textAlign="center">
             <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
-              Our Sponsors
+              Platinum Sponsors
             </Typography>
-            {/* TikTok logo */}
-            <Link href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">
+            {/* TTD logo */}
+            <Link href="https://careers.thetradedesk.com/" target="_blank" rel="noopener noreferrer">
               <img
-                src={tiktokLogo}
-                alt="TikTok Logo"
+                src={theTradeDeskLogo}
+                alt="The Trade Desk Logo"
                 height={40}
                 style={{ marginRight: '2vw', verticalAlign: 'middle' }}
               />
             </Link>
 
-            {/* Jane Street */}
+            {/* Arista Logo */}
+            <Link href="https://www.arista.com/en/" target="_blank" rel="noopener noreferrer">
+              <img
+                src={aristaLogo}
+                alt="Arista Logo"
+                height={50}
+                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+              />
+            </Link>
+          </Grid>
+          <Grid item xs={12} textAlign="center">
+            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
+                Gold Sponsors
+            </Typography>
+            {/* SafetyCulture Logo */}
+            <Link href="https://safetyculture.com/home/" target="_blank" rel="noopener noreferrer">
+              <img
+                src={scLogo}
+                alt="SafetyCulture Logo"
+                height={50}
+                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+              />
+            </Link>
+            {/* Jane Street Logo */}
             <Link href="https://www.janestreet.com/" target="_blank" rel="noopener noreferrer">
               <img
                 src={janeStreetLogo}
                 alt="Jane Street Logo"
+                height={50}
+                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+              />
+            </Link>
+          </Grid>
+          <Grid item xs={12} textAlign="center">
+            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
+                Silver Sponsors
+            </Typography>
+            {/* IMC Logo */}
+            <Link href="https://www.imc.com/ap" target="_blank" rel="noopener noreferrer">
+              <img
+                src={imcLogo}
+                alt="IMC Logo"
+                height={50}
+                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+              />
+            </Link>
+            {/* Citadel Logo */}
+            <Link href="https://www.citadelsecurities.com/" target="_blank" rel="noopener noreferrer">
+              <img
+                src={citadelLogo}
+                alt="Citadel Logo"
                 height={50}
                 style={{ verticalAlign: 'middle', marginBottom: '0px' }}
               />
