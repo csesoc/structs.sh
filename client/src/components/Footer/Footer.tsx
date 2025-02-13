@@ -3,11 +3,9 @@ import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import structsLogo from 'assets/img/structs.png';
 import janeStreetLogo from 'assets/img/sponsors/JaneStreetWhite.png';
-import aristaLogo from 'assets/img/sponsors/arista.png'
-import theTradeDeskLogo from 'assets/img/sponsors/theTradeDesk.png'
-import scLogo from 'assets/img/sponsors/sc.png'
-
-
+import aristaLogo from 'assets/img/sponsors/arista.png';
+import theTradeDeskLogo from 'assets/img/sponsors/theTradeDesk.png';
+import scLogo from 'assets/img/sponsors/sc.png';
 const StyledFooter = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   position: 'relative',
@@ -73,15 +71,14 @@ const Footer = () => {
               </Link>
             </Typography>
           </Grid>
-          
           <Grid item xs={12} textAlign="center">
-            <Typography color="textPrimary" variant="h4" style={{ marginBottom: '0.7rem' }}>
+            <Typography color="textPrimary" variant="h4" style={{ marginBottom: '0.7rem'}}>
               Our Sponsors
             </Typography>
           </Grid>
           {/* New Grid item for Company Sponsors */}
           <Grid item xs={12} textAlign="center">
-            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
+            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem'}}>
               Platinum Tier
             </Typography>
             <Box display="flex" justifyContent="center" gap={8}>
@@ -91,24 +88,23 @@ const Footer = () => {
                     src={theTradeDeskLogo}
                     alt="The Trade Desk Logo"
                     height={40}
-                    style={{ marginRight: '2vw', verticalAlign: 'middle' }}
+                    style={{ marginRight: '2vw', verticalAlign: 'middle'}}
                   />
                 </Link>
-
                 {/* Arista Logo */}
                 <Link href="https://www.arista.com/en/" target="_blank" rel="noopener noreferrer" sx={{mr: 8}}>
                   <img
                     src={aristaLogo}
                     alt="Arista Logo"
                     height={40}
-                    style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+                    style={{ verticalAlign: 'middle', marginBottom: '0px'}}
                   />
                 </Link>
             </Box>
           
           </Grid>
           <Grid item xs={12} textAlign="center">
-            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
+            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem'}}>
                 Gold Tier
             </Typography>
             <Box display="flex" justifyContent="center" gap={8}>
@@ -118,7 +114,7 @@ const Footer = () => {
                   src={scLogo}
                   alt="SafetyCulture Logo"
                   height={60}
-                  style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+                  style={{ verticalAlign: 'middle', marginBottom: '0px'}}
                 />
               </Link>
               {/* Jane Street Logo */}
@@ -127,7 +123,7 @@ const Footer = () => {
                   src={janeStreetLogo}
                   alt="Jane Street Logo"
                   height={60}
-                  style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+                  style={{ verticalAlign: 'middle', marginBottom: '0px'}}
                 />
               </Link>
             </Box>
