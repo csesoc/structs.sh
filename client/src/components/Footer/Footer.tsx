@@ -7,6 +7,7 @@ import aristaLogo from '../../assets/img/sponsors/arista.png';
 import theTradeDeskLogo from '../../assets/img/sponsors/theTradeDesk.png';
 import scLogo from '../../assets/img/sponsors/sc.png';
 
+
 const StyledFooter = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   position: 'relative',
