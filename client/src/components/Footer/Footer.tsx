@@ -84,23 +84,23 @@ const Footer = () => {
             </Typography>
             <Box display="flex" justifyContent="center" gap={8}>
               {/* TTD logo */}
-              <Link 
-              href="https://careers.thetradedesk.com/" 
-              target="_blank" 
-              rel="noopener noreferrer">
+              <Link
+                href="https://careers.thetradedesk.com/"
+                target="_blank"
+                rel="noopener noreferrer">
                 <img
                   src={theTradeDeskLogo}
                   alt="The Trade Desk Logo"
                   height={40}
-                  style={{ marginRight: '2vw', verticalAlign: 'middle'}}
+                  style={{ marginRight: '2vw', verticalAlign: 'middle' }}
                 />
               </Link>
               {/* Arista Logo */}
-              <Link 
-              href="https://www.arista.com/en/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              sx={{ mr: 8 }}>
+              <Link
+                href="https://www.arista.com/en/"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ mr: 8 }}>
                 <img
                   src={aristaLogo}
                   alt="Arista Logo"
@@ -112,14 +112,14 @@ const Footer = () => {
           </Grid>
           <Grid item xs={12} textAlign="center">
             <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
-                Gold Tier
+              Gold Tier
             </Typography>
             <Box display="flex" justifyContent="center" gap={8}>
-            {/* SafetyCulture Logo */}
-              <Link 
-              href="https://safetyculture.com/home/" 
-              target="_blank" 
-              rel="noopener noreferrer">
+              {/* SafetyCulture Logo */}
+              <Link
+                href="https://safetyculture.com/home/"
+                target="_blank"
+                rel="noopener noreferrer">
                 <img
                   src={scLogo}
                   alt="SafetyCulture Logo"
@@ -128,10 +128,10 @@ const Footer = () => {
                 />
               </Link>
               {/* Jane Street Logo */}
-              <Link 
-              href="https://www.janestreet.com/" 
-              target="_blank" 
-              rel="noopener noreferrer">
+              <Link
+                href="https://www.janestreet.com/"
+                target="_blank"
+                rel="noopener noreferrer">
                 <img
                   src={janeStreetLogo}
                   alt="Jane Street Logo"
