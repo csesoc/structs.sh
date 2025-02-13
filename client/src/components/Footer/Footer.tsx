@@ -87,7 +87,8 @@ const Footer = () => {
               <Link 
               href="https://careers.thetradedesk.com/" 
               target="_blank" 
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+              >
                 <img
                   src={theTradeDeskLogo}
                   alt="The Trade Desk Logo"
@@ -99,7 +100,9 @@ const Footer = () => {
               <Link 
               href="https://www.arista.com/en/" 
               target="_blank" 
-              rel="noopener noreferrer" sx={{ mr: 8 }}>
+              rel="noopener noreferrer" 
+              sx={{ mr: 8 }}
+              >
                 <img
                   src={aristaLogo}
                   alt="Arista Logo"
@@ -118,7 +121,8 @@ const Footer = () => {
               <Link 
               href="https://safetyculture.com/home/" 
               target="_blank" 
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+              >
                 <img
                   src={scLogo}
                   alt="SafetyCulture Logo"
@@ -130,7 +134,8 @@ const Footer = () => {
               <Link 
               href="https://www.janestreet.com/" 
               target="_blank" 
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+              >
                 <img
                   src={janeStreetLogo}
                   alt="Jane Street Logo"
