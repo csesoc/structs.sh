@@ -3,14 +3,10 @@ import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import structsLogo from 'assets/img/structs.png';
 import janeStreetLogo from 'assets/img/sponsors/JaneStreetWhite.png';
-import cseLogo from 'assets/img/affliations/CSE.png'
-import arcLogo from 'assets/img/affliations/arc.png'
-import acncLogo from 'assets/img/affliations/acnc.png'
 import aristaLogo from 'assets/img/sponsors/arista.png'
 import theTradeDeskLogo from 'assets/img/sponsors/theTradeDesk.png'
 import scLogo from 'assets/img/sponsors/sc.png'
-import imcLogo from 'assets/img/sponsors/imc.png'
-import citadelLogo from 'assets/img/sponsors/citadel.png'
+
 
 const StyledFooter = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -77,112 +73,67 @@ const Footer = () => {
               </Link>
             </Typography>
           </Grid>
-          {/* Grid item for affliations */}
+          
           <Grid item xs={12} textAlign="center">
-            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
-              Our Affliations
+            <Typography color="textPrimary" variant="h4" style={{ marginBottom: '0.7rem' }}>
+              Our Sponsors
             </Typography>
-            {/* Arc logo */}
-            <Link href="https://www.arc.unsw.edu.au/" target="_blank" rel="noopener noreferrer">
-              <img
-                src={arcLogo}
-                alt="Arc Logo"
-                height={40}
-                style={{ marginRight: '2vw', verticalAlign: 'middle' }}
-              />
-            </Link>
-            {/* ACNC logo */}
-            <Link href="https://www.acnc.gov.au/charity/charities/7fa763bf-0876-ee11-8179-00224893b0ed/profile" target="_blank" rel="noopener noreferrer">
-              <img
-                src={acncLogo}
-                alt="ACNC Logo"
-                height={40}
-                style={{ marginRight: '2vw', verticalAlign: 'middle' }}
-              />
-            </Link>
-
-            {/* CSE logo */}
-            <Link href="https://www.unsw.edu.au/engineering/our-schools/computer-science-and-engineering" target="_blank" rel="noopener noreferrer">
-              <img
-                src={cseLogo}
-                alt="CSE Logo"
-                height={40}
-                style={{ marginRight: '2vw', verticalAlign: 'middle' }}
-              />
-            </Link>
-
           </Grid>
           {/* New Grid item for Company Sponsors */}
           <Grid item xs={12} textAlign="center">
             <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
-              Platinum Sponsors
+              Platinum Tier
             </Typography>
-            {/* TTD logo */}
-            <Link href="https://careers.thetradedesk.com/" target="_blank" rel="noopener noreferrer">
-              <img
-                src={theTradeDeskLogo}
-                alt="The Trade Desk Logo"
-                height={40}
-                style={{ marginRight: '2vw', verticalAlign: 'middle' }}
-              />
-            </Link>
+            <Box display="flex" justifyContent="center" gap={8}>
+              {/* TTD logo */}
+              <Link href="https://careers.thetradedesk.com/" target="_blank" rel="noopener noreferrer" >
+                  <img
+                    src={theTradeDeskLogo}
+                    alt="The Trade Desk Logo"
+                    height={40}
+                    style={{ marginRight: '2vw', verticalAlign: 'middle' }}
+                  />
+                </Link>
 
-            {/* Arista Logo */}
-            <Link href="https://www.arista.com/en/" target="_blank" rel="noopener noreferrer">
-              <img
-                src={aristaLogo}
-                alt="Arista Logo"
-                height={50}
-                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
-              />
-            </Link>
+                {/* Arista Logo */}
+                <Link href="https://www.arista.com/en/" target="_blank" rel="noopener noreferrer" sx={{mr: 8}}>
+                  <img
+                    src={aristaLogo}
+                    alt="Arista Logo"
+                    height={40}
+                    style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+                  />
+                </Link>
+            </Box>
+          
           </Grid>
           <Grid item xs={12} textAlign="center">
             <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
-                Gold Sponsors
+                Gold Tier
             </Typography>
+            <Box display="flex" justifyContent="center" gap={8}>
             {/* SafetyCulture Logo */}
-            <Link href="https://safetyculture.com/home/" target="_blank" rel="noopener noreferrer">
-              <img
-                src={scLogo}
-                alt="SafetyCulture Logo"
-                height={50}
-                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
-              />
-            </Link>
-            {/* Jane Street Logo */}
-            <Link href="https://www.janestreet.com/" target="_blank" rel="noopener noreferrer">
-              <img
-                src={janeStreetLogo}
-                alt="Jane Street Logo"
-                height={50}
-                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
-              />
-            </Link>
+              <Link href="https://safetyculture.com/home/" target="_blank" rel="noopener noreferrer">
+                <img
+                  src={scLogo}
+                  alt="SafetyCulture Logo"
+                  height={60}
+                  style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+                />
+              </Link>
+              {/* Jane Street Logo */}
+              <Link href="https://www.janestreet.com/" target="_blank" rel="noopener noreferrer">
+                <img
+                  src={janeStreetLogo}
+                  alt="Jane Street Logo"
+                  height={60}
+                  style={{ verticalAlign: 'middle', marginBottom: '0px' }}
+                />
+              </Link>
+            </Box>
+            
           </Grid>
-          <Grid item xs={12} textAlign="center">
-            <Typography color="textPrimary" variant="h5" style={{ marginBottom: '0.7rem' }}>
-                Silver Sponsors
-            </Typography>
-            {/* IMC Logo */}
-            <Link href="https://www.imc.com/ap" target="_blank" rel="noopener noreferrer">
-              <img
-                src={imcLogo}
-                alt="IMC Logo"
-                height={50}
-                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
-              />
-            </Link>
-            {/* Citadel Logo */}
-            <Link href="https://www.citadelsecurities.com/" target="_blank" rel="noopener noreferrer">
-              <img
-                src={citadelLogo}
-                alt="Citadel Logo"
-                height={50}
-                style={{ verticalAlign: 'middle', marginBottom: '0px' }}
-              />
-            </Link>
-          </Grid>
+        
         </Grid>
       </Container>
       <Box textAlign="center" paddingTop={5}>
