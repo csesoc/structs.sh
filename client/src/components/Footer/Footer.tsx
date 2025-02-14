@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import structsLogo from '../../assets/img/structs.png';
 import janeStreetLogo from '../../assets/img/sponsors/JaneStreetWhite.png';
 import aristaLogo from '../../assets/img/sponsors/arista.png';
-import theTradeDeskLogo from '../../assets/img/sponsors/theTradeDesk.png';
+import theTradeDeskLogo from '../../assets/img/sponsors/thetradedesk.png';
 import scLogo from '../../assets/img/sponsors/sc.png';
 
 const StyledFooter = styled('footer')(({ theme }) => ({
