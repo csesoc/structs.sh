@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import structsLogo from '../../assets/img/structs.png';
 import janeStreetLogo from '../../assets/img/sponsors/JaneStreetWhite.png';
 import aristaLogo from '../../assets/img/sponsors/arista.png';
-import theTradeDeskLogo from '../../assets/img/sponsors/theTradeDesk.png';
+import theTradeDeskLogo from '../../assets/img/sponsors/thetradedesk.png';
 import scLogo from '../../assets/img/sponsors/sc.png';
 
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -88,7 +88,7 @@ const Footer = () => {
                 href="https://careers.thetradedesk.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                >
+              >
                 <img
                   src={theTradeDeskLogo}
                   alt="The Trade Desk Logo"
@@ -102,7 +102,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{ mr: 8 }}
-                >
+              >
                 <img
                   src={aristaLogo}
                   alt="Arista Logo"
@@ -122,7 +122,7 @@ const Footer = () => {
                 href="https://safetyculture.com/home/"
                 target="_blank"
                 rel="noopener noreferrer"
-                >
+              >
                 <img
                   src={scLogo}
                   alt="SafetyCulture Logo"
@@ -131,9 +131,7 @@ const Footer = () => {
                 />
               </Link>
               {/* Jane Street Logo */}
-              <Link
-                href="https://www.janestreet.com/" target="_blank"
-                rel="noopener noreferrer">
+              <Link href="https://www.janestreet.com/" target="_blank" rel="noopener noreferrer">
                 <img
                   src={janeStreetLogo}
                   alt="Jane Street Logo"
